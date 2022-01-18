@@ -14,7 +14,7 @@ class Game extends Phaser.Scene
     {
         let scene = this;
 
-        let element = this.add.dom(width/2, 400).createFromCache("start");
+        let element = this.add.dom(width/2, 100).createFromCache("start");
         element.addListener("click");
         element.setVisible(true);
         element.on("click", function (event) {
