@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="utf-8">
+  </head>
+  <body style="background-color: black;">
+    <div class="grid">
+    <div class="row">
+      <div class="col">
+        <img class="img-horizontal" src="assets/spritesheets/0.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/1.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/2.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/1.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/0.png"/>
+      </div>
+    </div>
+    <div class="rowGame">
+      <div class="col colGame">
+        <img class="img-vertical" src="assets/spritesheets/0.png"/>
+        <img class="img-vertical" src="assets/spritesheets/1.png"/>
+        <img class="img-vertical" src="assets/spritesheets/2.png"/>
+        <img class="img-vertical" src="assets/spritesheets/1.png"/>
+        <img class="img-vertical" src="assets/spritesheets/0.png"/>
+      </div>
+      <div id="cellGame" class="col colGame">
+        <iframe id="game" src="game.html"></iframe>
+      </div>
+      <div class="col colGame">
+        <img class="img-vertical" src="assets/spritesheets/0.png"/>
+        <img class="img-vertical"  src="assets/spritesheets/1.png"/>
+        <img class="img-vertical"  src="assets/spritesheets/2.png"/>
+        <img class="img-vertical"  src="assets/spritesheets/1.png"/>
+        <img class="img-vertical"  src="assets/spritesheets/0.png"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <img class="img-horizontal" src="assets/spritesheets/0.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/1.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/2.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/1.png"/>
+        <img class="img-horizontal" src="assets/spritesheets/0.png"/>
+        <div class="project">GAME AWAKE</div>
+      </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      setSize($("#game"));
+
+      var gamesLoaded = 1;
+      var gamesName = ["Teste","Arrisque e responda","Será que contêm"];
+      var games = [1,1,2];
+      var teams = [];
+      var urlArrisque = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpiW_OrWBIKmL9sdudoneIgqXS5v6GLb2QZybSey3veNJW7LB20_hWmq2bAQygaHq8wVABYPAYuLKg/pub?output=tsv";
+      var urlSera = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTk-nkt7aLirvqS0QPDGuXyeVYOhlhKc9gizWPLbcwYGfhHU6dxaQw7amCahvPilecL5HBB-IulBYGC/pub?output=tsv";
+      
+      function add(urls) {
+        let iframe = $("<iframe src=\""+urls.arrisque+"\" style=\"display:none\" />");
+        setSize(iframe);
+        $("#cellGame").append(iframe);
+        iframe = $("<iframe src=\""+urls.sera+"\" style=\"display:none\" />");
+        setSize(iframe);
+        $("#cellGame").append(iframe);
+      }
+
+      function setSize(iframe) {
+        iframe.css("width", (screen.availWidth - 94) + "px");
+        iframe.css("height", (screen.availHeight * 0.8) + "px");
+      }
+
+      function showGame(current,next,teams) {
+        $("iframe:eq("+current+")").css("display","none");
+        $("iframe:eq("+next+")").css("display","");
+        let iframe = $("iframe:eq("+next+")")[0];
+        iframe.contentWindow.scene.teams = teams;
+        iframe.contentWindow.notUpdate = false;
+      }
+
+      function loadedGame() {
+        gamesLoaded--;
+        if(gamesLoaded == 0) {
+          let iframe = $("iframe:eq(0)")[0];
+          setTimeout(
+            iframe.contentWindow.scene.enableGame(),
+            2000
+          );
+        }
+      }
+
+      function showNextPhase(index) {
+        showGame(1,0);
+        let iframe = $("iframe:eq(0)")[0];
+        iframe.contentWindow.scene.tournament.showWinner(index);
+      }
+    </script>
+  </body>
+</html>
